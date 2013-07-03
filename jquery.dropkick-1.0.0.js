@@ -183,6 +183,11 @@
     }
   };
 
+  // Programatically close the dropdown
+  methods.close = function() {
+    _closeDropdown(listData.$dk);
+  };
+
   // Expose the plugin
   $.fn.dropkick = function (method) {
     if (!ie6) {
@@ -288,6 +293,9 @@
   // Close a dropdown
   function _closeDropdown($dk) {
     $dk.removeClass('dk_open');
+
+    // Unbind global click events
+    _unbindClickHandlers($dk);
   }
 
   // Open a dropdown
@@ -296,6 +304,24 @@
     $dk.find('.dk_options').css({ top : $dk.find('.dk_toggle').outerHeight() - 1 });
     $dk.toggleClass('dk_open');
 
+    // Handle global click events
+    _bindClickHandlers($dk);
+  }
+
+  function _bindClickHandlers($dk) {
+    $dk._globalHandler = function(e) {
+      if ($(e.target || e.srcElement).closest('.dk_container') !== $dk) {        
+        _closeDropdown($dk);
+      }
+    };
+
+    $(document.body).bind('click', $dk._globalHandler);
+  }
+
+  function _unbindClickHandlers($dk)
+  {
+    $(document.body).unbind('click', $dk._globalHandler);
+    $dk._globalHandler = null;
   }
 
   /**
