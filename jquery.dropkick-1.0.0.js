@@ -188,6 +188,16 @@
     _closeDropdown(listData.$dk);
   };
 
+  methods.value = function(value) {
+    var $a = $('[data-dk-dropdown-value="'+value+'"]', $(this).parent()),
+        $dk = $a.closest('.dk_container').first();
+
+      if ($a.length == 0) { return; }
+
+    _updateFields($a, $dk);
+    _setCurrent($a.parent(), $dk);
+  };
+
   // Expose the plugin
   $.fn.dropkick = function (method) {
     if (!ie6) {
@@ -387,8 +397,7 @@
     $(document).on((msie ? 'mousedown' : 'click'), '.dk_options a', function (e) {
       var
         $option = $(this),
-        $dk     = $option.parents('.dk_container').first(),
-        data    = $dk.data('dropkick')
+        $dk     = $option.parents('.dk_container').first()
       ;
     
       _closeDropdown($dk);

@@ -225,6 +225,33 @@
           </form>
         </fieldset>
       </div>
+
+       <div class="example">
+        <h2>Set value from textbox</h2>
+        <fieldset>
+          <form action="#" method="post" accept-charset="utf-8" class="example_form">
+            <select name="set" class="custom_theme" tabindex="5">
+              <option value="">Pick a theme. Any theme</option>
+              <option value="default">Default Theme</option>
+              <option value="black" >Dark Gloss</option>
+              <option value="orange">Light Gloss</option>
+            </select>
+            <div style="clear: both;"></div>
+            <input type="text" id="setter">
+            <input type="submit" value="set">
+            <script>
+              var $select = $('select[name="set"]').dropkick(),
+                  $form   = $select.closest('form');
+
+              $form.on('submit', function(e) {
+                e.preventDefault();
+                var val = $('#setter').val();
+                $select.dropkick('value', val);
+              });
+            </script>
+          </form>
+        </fieldset>
+      </div>
     </div>
   </div>
 
