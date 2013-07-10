@@ -55,7 +55,8 @@
     defaults = {
       startSpeed : 1000,  // I recommend a high value here, I feel it makes the changes less noticeable to the user
       theme  : false,
-      change : false
+      change : false,
+      blur   : false
     },
 
     // Make sure we only bind keydown on the document once
@@ -320,8 +321,14 @@
 
   function _bindClickHandlers($dk) {
     $dk._globalHandler = function(e) {
-      if ($(e.target || e.srcElement).closest('.dk_container') !== $dk) {        
+      if ($(e.target || e.srcElement).closest('.dk_container') !== $dk) {                
         _closeDropdown($dk);
+
+        // Blur event
+        var data = $dk.data('dropkick');
+        if (typeof data.settings.blur === 'function') {
+          data.settings.blur.call($dk);
+        }
       }
     };
 
