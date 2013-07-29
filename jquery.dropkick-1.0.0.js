@@ -108,6 +108,7 @@
         data.value     = _notBlank($select.val()) || _notBlank($original.attr('value'));
         data.label     = $original.text();
         data.options   = $options;
+        data.disabled  = $select.prop('disabled');
       }
 
       // Build the dropdown HTML
@@ -187,16 +188,35 @@
   // Programatically close the dropdown
   methods.close = function() {
     _closeDropdown(listData.$dk);
+    return this;
   };
 
+  // Programatically set value
   methods.value = function(value) {
     var $a = $('[data-dk-dropdown-value="'+value+'"]', $(this).parent()),
         $dk = $a.closest('.dk_container').first();
 
-      if ($a.length == 0) { return; }
+    if ($a.length === 0) { return; }
 
     _updateFields($a, $dk);
     _setCurrent($a.parent(), $dk);
+
+    return this;
+  };
+
+  // Programatically disable
+  methods.disabled  = function(disabled) {
+    var $dk = $('.dk_container', $(this).parent()),
+        fn = disabled ? 'addClass' : 'removeClass';
+
+    if (typeof disabled === 'undefined') {
+      return $(this).data('dropkick').disabled;
+    }
+
+    $dk[fn]('disabled');
+    $(this).data('dropkick').disabled = disabled;
+
+    return this;
   };
 
   // Expose the plugin
@@ -312,6 +332,8 @@
   // Open a dropdown
   function _openDropdown($dk) {
     var data = $dk.data('dropkick');
+    if (data.disabled) { return; }
+
     $dk.find('.dk_options').css({ top : $dk.find('.dk_toggle').outerHeight() - 1 });
     $dk.toggleClass('dk_open');
 

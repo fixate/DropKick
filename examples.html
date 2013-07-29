@@ -252,6 +252,33 @@
           </form>
         </fieldset>
       </div>
+
+      <div class="example">
+        <h2>Disabled</h2>
+        <fieldset>
+          <form action="#" method="post" accept-charset="utf-8" class="example_form">
+            <select name="disabled" class="custom_theme" tabindex="5" disabled>
+              <option value="">Pick a theme. Any theme</option>
+              <option value="default">Default Theme</option>
+              <option value="black" >Dark Gloss</option>
+              <option value="orange">Light Gloss</option>
+            </select>            
+            <div style="clear: both;"></div>
+            <input type="submit" value="Toggle Disabled (on)" />
+            <script>
+              var $select = $('select[name="disabled"]').dropkick(),
+                  $form   = $select.closest('form'),
+                  disabled = $select.data('dropkick').disabled;
+
+              $form.on('submit', function(e) {
+                e.preventDefault();
+                $select.dropkick('disabled', (disabled = !disabled));                
+                $(this).find('[type="submit"]').val(disabled ? 'Toggle Disabled (on)' : 'Toggle Disabled (off)')
+              });
+            </script>
+          </form>
+        </fieldset>
+      </div>
     </div>
   </div>
 
